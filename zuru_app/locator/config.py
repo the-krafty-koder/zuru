@@ -1,0 +1,3 @@
+import os
+
+os.environ["ACCUWEATHER_APIKEY"] = 'BmJZaGgH5M43ILw2gV0S9LWH96qeASVZ'
