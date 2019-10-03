@@ -1,0 +1,1 @@
+A django app that suggests travel destinations around towns neighboring a user using weather forecasts.Location based on ip addresses 
