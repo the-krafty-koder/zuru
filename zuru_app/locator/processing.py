@@ -4,6 +4,12 @@ ACCU_APIKEY = os.environ.get('ACCUWEATHER_APIKEY')
 
 class GetLocationDetails:
 
+    """
+
+    Return location details after obtaining  ip address.
+
+    """
+
     def __init__(self, ip):
         self.ip = ip
         self.location_key, self.response = self.get_response()
@@ -61,7 +67,8 @@ class GetForecastDetails:
         return {day['Date']: {'Day': day['Day'],
                               'Night': day['Night'],
                               'Temperature': [day['Temperature']['Minimum'], day['Temperature']['Maximum']]
-                              } for day in response.json()['DailyForecasts']}
+                              } for day in response.json()['DailyForecasts']
+                }
 
     def get_12_hour_forecast(self):
         response = self.get_response('hourly/12hour')
@@ -70,13 +77,17 @@ class GetForecastDetails:
                                    'Phrase': hour['IconPhrase'],
                                    'Temperature': hour['Temperature'],
                                    'RainProbability':hour['PrecipitationProbability']
-                              } for hour in response.json()[:]}
+                              } for hour in response.json()[:]
+                }
 
     def get_current_conditions(self):
         response = requests.get("http://dataservice.accuweather.com/currentconditions/v1/{}?apikey={}"
                                 .format(self.location_key, ACCU_APIKEY))
 
-        return [{"Time": time["LocalObservationDateTime"], "WeatherText": time["WeatherText"], "Icon": time["WeatherIcon"], "Temperature": time["Temperature"]}
-                for time in response.json()]
+        return [{"Time": time["LocalObservationDateTime"],
+                 "WeatherText": time["WeatherText"],
+                 "Icon": time["WeatherIcon"],
+                 "Temperature": time["Temperature"]} for time in response.json()
+                ]
 
 
