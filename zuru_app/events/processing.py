@@ -1,10 +1,16 @@
 import requests,os
 from bs4 import BeautifulSoup
+from .event_model import Event
 
 EVENTS_APIKEY = os.environ.get('ACCUWEATHER_APIKEY')
 
 
 class GetEvents:
+
+    """
+    Return events dependent on location +/date from events API
+
+    """
 
     __slots__ = ['location', 'date', 'events']
 
@@ -20,10 +26,10 @@ class GetEvents:
 
         response = requests.request("GET", url, params=query_string)
 
-        return BeautifulSoup(response,"html.parser").events
+        return BeautifulSoup(response.text,"html.parser").find_all('event')
 
     def get_events(self):
 
-        return {event.title: event for event in self.events if not isinstance(event, type("me".upper))}  #replace bound function with better code
+        return {event.title: Event(event) for event in self.events}
 
 
